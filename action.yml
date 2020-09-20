@@ -8,5 +8,5 @@ runs:
 inputs:
   token:
     required: true
-  release:
+  release_number:
     required: true

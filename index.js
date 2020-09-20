@@ -5,7 +5,7 @@ const context = github.context;
 async function run() {
   try {
     const octokit = github.getOctokit(core.getInput('token'));
-    const release = core.getInput('release');
+    const release = core.getInput('release_number');
 
     core.info(`Finding successful workflow run for the ${release} release...`);
 
