@@ -1,0 +1,12 @@
+name: 'Check Project Release Verification'
+description: 'Github Action to check if a project release was verified.'
+
+runs:
+  using: 'node12'
+  main: 'index.js'
+
+inputs:
+  token:
+    required: true
+  release:
+    required: true
