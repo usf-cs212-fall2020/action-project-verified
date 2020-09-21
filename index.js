@@ -17,9 +17,16 @@ async function run() {
       status: 'success'
     });
 
+    const runs1 = await octokit.actions.listWorkflowRuns({
+      owner: context.payload.organization.login,
+      repo: context.payload.repository.name,
+      workflow_id: 'verify.yml',
+      event: 'release'
+    });
+
+    core.info(`Debug: ${runs1.data.workflow_runs.map(r => r.head_branch)}`);
 
     const branches = runs.data.workflow_runs.map(r => r.head_branch);
-
     core.info(`Fetched ${runs.data.workflow_runs.length} successful workflow runs: ${branches}`);
 
     const found = runs.data.workflow_runs.find(r => r.head_branch === release);
