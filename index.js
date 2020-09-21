@@ -17,7 +17,10 @@ async function run() {
       status: 'success'
     });
 
-    core.info(`Fetched ${runs.data.workflow_runs.length} successful workflow runs.`);
+
+    const branches = runs.data.workflow_runs.map(r => r.head_branch);
+
+    core.info(`Fetched ${runs.data.workflow_runs.length} successful workflow runs: ${branches}`);
 
     const found = runs.data.workflow_runs.find(r => r.head_branch === release);
 
