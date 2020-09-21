@@ -25,7 +25,7 @@ async function run() {
     // this check if there have been that many other runs?
 
     if (found === undefined) {
-      core.setFailed(`No runs found that matches the ${release} release.`);
+      core.setFailed(`Cound not find passing workflow run for the ${release} release.`);
     }
     else {
       core.info(`Found passing workflow run for the ${release} release.`);
