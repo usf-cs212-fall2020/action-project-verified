@@ -13,23 +13,11 @@ async function run() {
       owner: context.payload.organization.login,
       repo: context.payload.repository.name,
       workflow_id: 'verify.yml',
-      event: 'release',
-      status: 'success'
-    });
-
-    const runs1 = await octokit.actions.listWorkflowRuns({
-      owner: context.payload.organization.login,
-      repo: context.payload.repository.name,
-      workflow_id: 'verify.yml',
       event: 'release'
     });
 
-    core.info(`Debug: ${runs1.data.workflow_runs.map(r => r.head_branch)}`);
-    const found1 = runs1.data.workflow_runs.find(r => r.head_branch === release);
-    core.info(JSON.stringify(found1));
-
     const branches = runs.data.workflow_runs.map(r => r.head_branch);
-    core.info(`Fetched ${runs.data.workflow_runs.length} successful workflow runs: ${branches}`);
+    core.info(`Fetched ${runs.data.workflow_runs.length} workflow runs: ${branches.join(', ')}`);
 
     const found = runs.data.workflow_runs.find(r => r.head_branch === release);
 
@@ -37,17 +25,27 @@ async function run() {
     // this check if there have been that many other runs?
 
     if (found === undefined) {
-      core.setFailed(`Cound not find passing workflow run for the ${release} release.`);
+      core.setFailed(`Could not find any workflow runs for the ${release} release.`);
     }
     else {
-      core.info(`Found passing workflow run for the ${release} release.`);
-      core.info(`Workflow: ${context.workflow}, Job: ${context.job}, Run ID: ${context.runId}, Run Number: ${context.runNumber}`);
+      core.info(`Found workflow run for the ${release} release.`);
+      core.info(`Workflow: ${found.workflow_id}, Run ID: ${found.id}, Run Number: ${found.run_number}`);
+      core.info(`Status: ${found.status}, Conclusion: ${found.conclusion}`);
       core.info(`URL: ${found.html_url}`);
 
-      core.setOutput('workflow', context.workflow);
-      core.setOutput('job', context.job);
-      core.setOutput('run_id', context.runId);
+      core.setOutput('workflow', found.workflow_id);
+      core.setOutput('run_number', found.run_number);
+      core.setOutput('run_id', found.id);
       core.setOutput('run_url', found.html_url);
+      core.setOutput('status', found.status);
+      core.setOutput('conclusion', found.conclusion);
+
+      if (found.status !== "completed") {
+        core.setFailed(`Workflow run for ${release} did not complete.`);
+      }
+      else if (found.conclusion !== "success") {
+        core.setFailed(`Workflow run for ${release} was not successful.`);
+      }
     }
   }
   catch (error) {

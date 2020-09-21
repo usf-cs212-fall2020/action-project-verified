@@ -13,10 +13,14 @@ inputs:
 
 outputs:
   workflow:
-    description: 'The passing workflow if found.'
-  job:
-    description: 'The job of the passing workflow if found.'
+    description: 'Details from the found workflow run.'
+  run_number:
+    description: 'Details from the found workflow run.'
   run_id:
-    description: 'The run ID of the passing workflow if found.'
+    description: 'Details from the found workflow run.'
   run_url:
-    description: 'The URL of the passing workflow if found.'
+    description: 'Details from the found workflow run.'
+  status:
+    description: 'Details from the found workflow run.'
+  conclusion:
+    description: 'Details from the found workflow run.'
