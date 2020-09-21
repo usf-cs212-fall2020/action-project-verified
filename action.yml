@@ -10,3 +10,13 @@ inputs:
     required: true
   release_number:
     required: true
+
+outputs:
+  workflow:
+    description: 'The passing workflow if found.'
+  job:
+    description: 'The job of the passing workflow if found.'
+  run_id:
+    description: 'The run ID of the passing workflow if found.'
+  run_url:
+    description: 'The URL of the passing workflow if found.'

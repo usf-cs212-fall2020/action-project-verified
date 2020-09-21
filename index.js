@@ -31,6 +31,11 @@ async function run() {
       core.info(`Found passing workflow run for the ${release} release.`);
       core.info(`Workflow: ${context.workflow}, Job: ${context.job}, Run ID: ${context.runId}, Run Number: ${context.runNumber}`);
       core.info(`URL: ${found.html_url}`);
+
+      core.setOutput('workflow', context.workflow);
+      core.setOutput('job', context.job);
+      core.setOutput('run_id', context.runId);
+      core.setOutput('run_url', found.html_url);
     }
   }
   catch (error) {
